@@ -11,6 +11,9 @@ import java.util.*;
 
 public class BSTSet<E extends Comparable<E>> implements ISimpleSet<E> {
 
+	/**
+	 * TreeNode class includes parent pointer for iteration and deletion
+	 */
     private class TreeNode {
         E info;
 
@@ -26,19 +29,34 @@ public class BSTSet<E extends Comparable<E>> implements ISimpleSet<E> {
         }
     }
 
+    /**
+     * Invariant: mySize is number of elements in set
+     * myRoot points to root of entire binary search tree
+     */
     private int mySize;
-
     private TreeNode myRoot;
 
+    /**
+     * Create an empty set
+     */
     public BSTSet() {
         mySize = 0;
         myRoot = null;
     }
 
+    /**
+     * Return number of elements in this set as an O(1) operation
+     * @return the number of elements in the set
+     */
     public int size() {
         return mySize;
     }
 
+    /**
+     * Add an element to the set
+     * @param element is value being added to set
+     * @return true if element added, false if duplicate and already in set
+     */
     public boolean add(E element) {
         if (myRoot == null) {
             myRoot = new TreeNode(element, null, null, null);
@@ -74,6 +92,11 @@ public class BSTSet<E extends Comparable<E>> implements ISimpleSet<E> {
 
     }
 
+    /**
+     * Remove an element from this set
+     * @param element is value being removed
+     * @return true if element removed, false if not in set
+     */
     public boolean remove(E element) {
         TreeNode root = myRoot;
         while (root != null) {
@@ -158,6 +181,11 @@ public class BSTSet<E extends Comparable<E>> implements ISimpleSet<E> {
         }
     }
 
+    /**
+     * Determine if a value is in this set
+     * @param element is query for containment in this set
+     * @return true if and only if element in this set
+     */
     public boolean contains(E element) {
         TreeNode root = myRoot;
         while (root != null) {
@@ -173,6 +201,10 @@ public class BSTSet<E extends Comparable<E>> implements ISimpleSet<E> {
         return false;
     }
 
+    /**
+     * Return iterator over this set
+     * @return an iterator for this set
+     */
     public Iterator<E> iterator() {
         return new TreeIterator(myRoot);
     }
