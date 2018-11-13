@@ -20,7 +20,17 @@ public class SimpleSetTester {
         }
         return (end-start)/1e9;
     }
-    
+    public double sortIter(ISimpleSet<String> set) {
+    	ArrayList<String> list = new ArrayList<>();
+    	double start = System.nanoTime();
+    	Iterator<String> iter = set.iterator();
+    	while(iter.hasNext()) {
+    		list.add(iter.next());
+    	}
+    	Collections.sort(list);
+    	double end = System.nanoTime();
+    	return (end-start)/1e9;
+    }
     public double iterSize(ISimpleSet<String> set){
         int count = 0;
         double start = System.nanoTime();
@@ -89,25 +99,28 @@ public class SimpleSetTester {
         System.out.print(name+"\t"+list.length+"\t"+expectedSize+"\t");
         
         double time = addAll(list,set,expectedSize);
-        System.out.print(time+"\t");
+        System.out.printf("%1.3f\t",time);
         
         time = removeAll(list,set);
-        System.out.print(time+"\t");
+        System.out.printf("%1.3f\t",time);
         
         time = addAll(list,set,expectedSize);
-        System.out.print(time+"\t");
+        System.out.printf("%1.3f\t",time);
         
         time = queryAll(list,set);
-        System.out.print(time+"\t");
+        System.out.printf("%1.3f\t",time);
         
         time = iterSize(set);
-        System.out.print(time+"\t");
+        System.out.printf("%1.3f\t",time);
         time = iterableSize(set);
-        System.out.print(time+"\t");
+        System.out.printf("%1.3f\t",time);
+        
+        time = sortIter(set);
+        System.out.printf("%1.3f\t",time);
         
         time = iterateRemove(set);
-        System.out.print(time+"\t");
-        
+        System.out.printf("%1.3f\t",time);
+               
         System.out.println();
     }
     
@@ -124,20 +137,21 @@ public class SimpleSetTester {
                     list.add(s.next());
                 }
                 String[] array = list.toArray(new String[0]);
-                HashSet<String> hashed = new HashSet<String>(list);
+                HashSet<String> hashed = new HashSet<>(list);
                 SimpleSetTester sst = new SimpleSetTester();
-                ISimpleSet<String> linkedSet = new LinkedSet<String>();
-                ISimpleSet<String> arraySet = new ArraySet<String>();
-                ISimpleSet<String> sortedArraySet = new SortedArraySet<String>();
-                ISimpleSet<String> treeSetSet = new TreeSetSet<String>();
-                ISimpleSet<String> bstSet = new BSTSet<String>();
-                ISimpleSet<String> avlSet = new AVLSet<String>();
-                ISimpleSet<String> hset = new SimpleHashSet<String>();
+                ISimpleSet<String> linkedSet = new LinkedSet<>();
+                ISimpleSet<String> arraySet = new ArraySet<>();
+                ISimpleSet<String> sortedArraySet = new SortedArraySet<>();
+                ISimpleSet<String> treeSetSet = new TreeSetSet<>();
+                ISimpleSet<String> bstSet = new BSTSet<>();
+                ISimpleSet<String> avlSet = new AVLSet<>();
+                ISimpleSet<String> hset = new SimpleHashSet<>();
+                ISimpleSet<String> trieSet = new TrieSet();
                 int size = hashed.size();
                 
                 System.out.println("testing: "+file.getName());
-                System.out.println("kind\tsize\tssize\tadd\tdel\tadd\tquery\titer\tfor\titrem");
-                System.out.println("----\t-----\t----\t---\t---\t---\t-----\t----\t---\t-----");
+                System.out.println("kind\tsize\tssize\tadd\tdel\tadd\tquery\titer\tfor\titsort\titrem");
+                System.out.println("----\t-----\t----\t---\t---\t---\t-----\t----\t---\t-----\t-----");
                 
                 sst.stress(array,linkedSet, "link",size);
                 sst.stress(array,arraySet, "array",size);
@@ -145,7 +159,8 @@ public class SimpleSetTester {
                 sst.stress(array,treeSetSet, "trees",size);
                 sst.stress(array,bstSet, "bst",size);
                 sst.stress(array,hset,"hash",size);
-                sst.stress(array,avlSet, "avl",size);
+                //sst.stress(array,avlSet, "avl",size);
+                sst.stress(array, trieSet, "trie", size);
             }
             catch (Exception e){
                 System.out.println("trouble "+e);

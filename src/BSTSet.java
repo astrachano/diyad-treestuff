@@ -216,11 +216,17 @@ public class BSTSet<E extends Comparable<E>> implements ISimpleSet<E> {
         private TreeNode myPrevious;
 
         public TreeIterator(TreeNode root) {
-            while (root.left != null) {
-                root = root.left;
-            }
-            myCurrent = root;
-            myPrevious = null;
+        	if (root == null) {
+        		myCurrent = null;
+        		myPrevious = null;
+        	}
+        	else {
+	            while (root.left != null) {
+	                root = root.left;
+	            }
+	            myCurrent = root;
+	            myPrevious = null;
+        	}
         }
 
         public boolean hasNext() {
